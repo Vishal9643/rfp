@@ -27,11 +27,14 @@ const AdminVendorList = () => {
   }, []);
 
   const approveVendor = (user_id) => {
+    alert(user_id);
     const formData = new FormData();
-    formData.append("user_id", user_id);
+    formData.append("user_id", Number(user_id));
     formData.append("status", "approved");
+    formData.append("_method", "put");
+
     const approve = async () => {
-      const data = await axios.put("/api/approveVendor", formData, {
+      const data = await axios.post("/api/approveVendor", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -39,6 +42,9 @@ const AdminVendorList = () => {
       console.log(data.data);
       if (data.data.response == "error") {
         toast.error("Error in Approving Vendor");
+      }
+      if (data.data.response == "success") {
+        toast.error("successfully Approved");
       }
     };
     approve();
