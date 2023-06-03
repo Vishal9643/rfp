@@ -49,7 +49,7 @@ const Login = () => {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
-    toast.success("Loggin in");
+    toast.warn("Logging in");
 
     const fetchData = async () => {
       try {
@@ -61,10 +61,14 @@ const Login = () => {
         localStorage.setItem("Name", data.data.name);
         localStorage.setItem("type", data.data.type);
         localStorage.setItem("Authorization", data.data.token);
+        localStorage.setItem("user_id", data.data.user_id);
         setResp(data.data);
         console.log(data.data);
         if (data.data.response === "error") {
           toast.error(data.data.error);
+        }
+        if (Array.isArray(data.data.error)) {
+          toast.error(data.data.error[0]);
         }
       } catch (error) {
         toast.error("An error occurred. Please try again.");

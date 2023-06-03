@@ -27,7 +27,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <a href="users.html" class="waves-effect">
+                <a href="#" class="waves-effect">
                   <i class="mdi mdi-apps"></i>
                   <span>User Management</span>
                 </a>

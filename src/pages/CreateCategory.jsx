@@ -99,7 +99,7 @@ const CreateCategory = () => {
                                   type="text"
                                   className="form-control"
                                   id="vendor-Price"
-                                  placeholder="Vendor Price"
+                                  placeholder="New Category Name"
                                   onChange={handleCategory}
                                 />
                                 {categoryError && (

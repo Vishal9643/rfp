@@ -10,21 +10,28 @@ const VendorRfp = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   let arr = [];
+  const user_id = localStorage.getItem("user_id");
   useEffect(() => {
     const fetchData = async () => {
-      const requests = [];
-      for (let i = 1; i < 10; i++) {
-        requests.push(
-          axios.get(`/api/rfp/${i}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-        );
-      }
-      const responses = await Promise.all(requests);
-      const data = responses.map((response) => response.data);
-      setData(data);
+      const data = await axios.get(`/api/rfp/getrfp/${user_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(data.data);
+      // const requests = [];
+      // for (let i = 1; i < 10; i++) {
+      //   requests.push(
+      //     axios.get(`/api/rfp/${i}`, {
+      //       headers: {
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //     })
+      //   );
+      // }
+      // const responses = await Promise.all(requests);
+      // const data = responses.map((response) => response.data);
+      setData(data.data);
     };
 
     fetchData();
@@ -40,7 +47,10 @@ const VendorRfp = () => {
   // Logic for pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = getData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems =
+    getData.response == "success" && getData.rfps
+      ? getData.rfps.slice(indexOfFirstItem, indexOfLastItem)
+      : "";
 
   // Change page
   const paginate = (pageNumber) => {
@@ -101,16 +111,19 @@ const VendorRfp = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
+                                  {getData.response == "error" ? (
+                                    <h3>No Data to Display</h3>
+                                  ) : (
+                                    ""
+                                  )}
                                   {currentItems &&
                                     currentItems.map((data) => (
-                                      <tr key={data.rfp[0].rfp_no}>
-                                        <th scope="row">
-                                          {data.rfp[0].rfp_no}
-                                        </th>
-                                        <td>{data.rfp[0].item_name}</td>
-                                        <td>{data.rfp[0].last_date}</td>
-                                        <td>{data.rfp[0].minimum_price}</td>
-                                        <td>{data.rfp[0].maximum_price}</td>
+                                      <tr key={data.rfp_no}>
+                                        <th scope="row">{data.rfp_no}</th>
+                                        <td>{data.item_name}</td>
+                                        <td>{data.last_date}</td>
+                                        <td>{data.minimum_price}</td>
+                                        <td>{data.maximum_price}</td>
                                         <td>
                                           <span className="badge badge-pill badge-success">
                                             Open
@@ -122,7 +135,7 @@ const VendorRfp = () => {
                                             title="Close RFP"
                                             className="text-danger"
                                             onClick={() => {
-                                              applyData(data.rfp[0].id);
+                                              applyData(data.id);
                                             }}
                                           >
                                             Apply
@@ -228,8 +241,17 @@ const VendorRfp = () => {
                                   aria-live="polite"
                                 >
                                   Showing {indexOfFirstItem + 1} to{" "}
-                                  {Math.min(indexOfLastItem, getData.length)} of{" "}
-                                  {getData.length} entries
+                                  {getData &&
+                                    getData.rfps &&
+                                    Math.min(
+                                      indexOfLastItem,
+                                      getData.rfps.length
+                                    )}{" "}
+                                  of{" "}
+                                  {getData &&
+                                    getData.rfps &&
+                                    getData.rfps.length}{" "}
+                                  entries
                                 </div>
                               </div>
                               <div class="col-sm-12 col-md-7 dataTables_wrapper ">
@@ -257,38 +279,43 @@ const VendorRfp = () => {
                                         Previous
                                       </a>
                                     </li>
-                                    {Array.from(
-                                      {
-                                        length: Math.ceil(
-                                          getData.length / itemsPerPage
-                                        ),
-                                      },
-                                      (_, i) => (
-                                        <li
-                                          key={i}
-                                          class={`paginate_button page-item ${
-                                            currentPage === i + 1
-                                              ? "active"
-                                              : ""
-                                          }`}
-                                        >
-                                          <a
-                                            href="#"
-                                            aria-controls="datatable"
-                                            data-dt-idx={i + 1}
-                                            tabindex="0"
-                                            class="page-link"
-                                            onClick={() => paginate(i + 1)}
+                                    {getData &&
+                                      getData.rfps &&
+                                      Array.from(
+                                        {
+                                          length: Math.ceil(
+                                            getData.rfps.length / itemsPerPage
+                                          ),
+                                        },
+                                        (_, i) => (
+                                          <li
+                                            key={i}
+                                            class={`paginate_button page-item ${
+                                              currentPage === i + 1
+                                                ? "active"
+                                                : ""
+                                            }`}
                                           >
-                                            {i + 1}
-                                          </a>
-                                        </li>
-                                      )
-                                    )}
+                                            <a
+                                              href="#"
+                                              aria-controls="datatable"
+                                              data-dt-idx={i + 1}
+                                              tabindex="0"
+                                              class="page-link"
+                                              onClick={() => paginate(i + 1)}
+                                            >
+                                              {i + 1}
+                                            </a>
+                                          </li>
+                                        )
+                                      )}
                                     <li
                                       class={`paginate_button page-item next ${
-                                        currentPage ===
-                                        Math.ceil(getData.length / itemsPerPage)
+                                        currentPage === getData &&
+                                        getData.rfps &&
+                                        Math.ceil(
+                                          getData.rfps.length / itemsPerPage
+                                        )
                                           ? "disabled"
                                           : ""
                                       }`}

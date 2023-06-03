@@ -5,7 +5,11 @@ import { Navigate } from "react-router-dom";
 const Navbar = () => {
   const name = localStorage.getItem("Name");
   const handleLogout = () => {
+    localStorage.removeItem("Name");
+    localStorage.removeItem("type");
+    localStorage.removeItem("Authorization");
     localStorage.clear();
+
     window.location.href = "http://localhost:3000";
   };
 

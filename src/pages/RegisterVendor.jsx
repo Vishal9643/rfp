@@ -29,6 +29,8 @@ const RegisterVendor = () => {
   const [passwordError, setPasswordError] = useState("");
   const [revenueError, setRevenueError] = useState("");
   const [resp, setResp] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleFirstName = (e) => {
     const input = e.target.value;
@@ -142,6 +144,10 @@ const RegisterVendor = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+      return;
+    }
     if (
       !firstname ||
       !email ||
@@ -184,6 +190,7 @@ const RegisterVendor = () => {
     formData.append("mobile", mobile);
 
     const fetchData = async () => {
+      toast.warn("Registering...");
       const data = await axios.post("/api/registervendor", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -192,6 +199,9 @@ const RegisterVendor = () => {
       console.log(data.data);
       if (data.data.response === "error") {
         toast.error(data.data.error);
+      }
+      if (data.data.response === "success") {
+        toast.success("Registration Successful");
       }
       setResp(data.data);
     };
@@ -309,10 +319,14 @@ const RegisterVendor = () => {
                                   class="form-control"
                                   id="confirmpassword"
                                   placeholder="Enter Confirm Password"
+                                  value={confirmPassword}
+                                  onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                  }
                                 />
-                                {passwordError && (
+                                {confirmPasswordError && (
                                   <span className="text-danger">
-                                    {passwordError}
+                                    {confirmPasswordError}
                                   </span>
                                 )}
                               </div>

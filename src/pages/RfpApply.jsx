@@ -22,6 +22,7 @@ const RfpApply = () => {
   const formData = new FormData();
   formData.append("item_price", Number(price));
   formData.append("total_cost", Number(cost));
+  formData.append("_method", "put");
 
   const handleApply = (e) => {
     e.preventDefault();
@@ -32,7 +33,7 @@ const RfpApply = () => {
     }
 
     const fetchData = async () => {
-      const data = await axios.put(`/api/rfp/apply/${apply}`, formData, {
+      const data = await axios.post(`/api/rfp/apply/${apply}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

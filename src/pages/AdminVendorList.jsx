@@ -5,35 +5,42 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 const AdminVendorList = () => {
   const [getData, setData] = useState([]);
   const token = localStorage.getItem("Authorization");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [approve, setApprove] = useState("");
+  const [sortOption, setSortOption] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get("/api/vendorlist", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(data.data);
-
-      console.log(data.data);
+      try {
+        const data = await axios.get("/api/vendorlist", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setData(data.data);
+        console.log(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
     fetchData();
-  }, []);
+  }, [approve]);
 
   const approveVendor = (user_id) => {
-    alert(user_id);
+    // alert(user_id);
     const formData = new FormData();
     formData.append("user_id", Number(user_id));
     formData.append("status", "approved");
     formData.append("_method", "put");
 
     const approve = async () => {
+      toast.warn("Approving");
       const data = await axios.post("/api/approveVendor", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -44,7 +51,8 @@ const AdminVendorList = () => {
         toast.error("Error in Approving Vendor");
       }
       if (data.data.response == "success") {
-        toast.error("successfully Approved");
+        toast.success("successfully Approved");
+        setApprove("Approve");
       }
     };
     approve();
@@ -61,6 +69,30 @@ const AdminVendorList = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const type = localStorage.getItem("type");
+  const sortVendors = () => {
+    // Sort the vendor list based on the sortOption
+    if (sortOption === "ascending") {
+      setData((prevData) => ({
+        ...prevData,
+        vendors: prevData.vendors.sort((a, b) =>
+          a.name.split(" ")[0].localeCompare(b.name.split(" ")[0])
+        ),
+      }));
+      setSortOption("descending"); // Toggle to descending order after sorting ascendingly
+    } else if (sortOption === "descending") {
+      setData((prevData) => ({
+        ...prevData,
+        vendors: prevData.vendors.sort((a, b) =>
+          b.name.split(" ")[0].localeCompare(a.name.split(" ")[0])
+        ),
+      }));
+      setSortOption("ascending"); // Toggle to ascending order after sorting descendingly
+    } else {
+      // If sortOption is empty, set it to ascending
+      setSortOption("ascending");
+    }
+  };
+
   return (
     <div>
       <ToastContainer />
@@ -99,7 +131,37 @@ const AdminVendorList = () => {
                                 <h4 class="card-title">Vendors</h4>
                               </div>
                             </div>
+                            {/* <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <div>
+                                <select
+                                  value={sortOption}
+                                  onChange={(e) =>
+                                    setSortOption(e.target.value)
+                                  }
+                                >
+                                  <option value="">Sort by name</option>
+                                  <option value="ascending">Ascending</option>
+                                  <option value="descending">Descending</option>
+                                </select>
+                                <button
+                                  className="btn btn-primary"
+                                  onClick={() => sortVendors()}
+                                  style={{
+                                    width: "100px",
+                                    marginLeft: "10px",
+                                  }}
+                                >
+                                  Sort
+                                </button>
+                              </div>
+                            </div> */}
                           </div>
+
                           <div class="table-responsive">
                             <table
                               class="table mb-0 listingData dt-responsive"
@@ -108,7 +170,22 @@ const AdminVendorList = () => {
                               <thead>
                                 <tr>
                                   <th>S. No.</th>
-                                  <th>First name</th>
+                                  <th
+                                    onClick={() => sortVendors()}
+                                    style={{
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    First name{" "}
+                                    {sortOption === "ascending" ? (
+                                      <i className="fas fa-sort-up"></i>
+                                    ) : sortOption === "descending" ? (
+                                      <i className="fas fa-sort-down"></i>
+                                    ) : (
+                                      <i className="fas fa-sort"></i>
+                                    )}
+                                  </th>
+
                                   <th>Last Name</th>
                                   <th>Email</th>
                                   <th>Contact No</th>

@@ -37,6 +37,7 @@ const CreateRfp = () => {
   const handleName = (e) => {
     setName(e.target.value);
     setCategory(tempCategory);
+    // alert(typeof tempCategory);
   };
   const handleDescription = (e) => {
     setDescription(e.target.value);
@@ -51,7 +52,7 @@ const CreateRfp = () => {
     setMaximum(e.target.value);
   };
   const handleVendor = (e) => {
-    alert(e.target.value);
+    // toast.warn(`You have selected Vendor with user_id ${e.target.value}`);
     setVendor(e.target.value);
   };
   const token = localStorage.getItem("Authorization");
@@ -72,6 +73,8 @@ const CreateRfp = () => {
       toast.error("Please Fill all the required Field");
       return;
     }
+    toast.warn("Creating RFP");
+
     const formattedLastDate = format(lastDate, "yyyy/MM/dd");
     const formData = new FormData();
     formData.append("item_name", name);
@@ -80,7 +83,7 @@ const CreateRfp = () => {
     formData.append("last_date", formattedLastDate);
     formData.append("minimum_price", Number(minimum));
     formData.append("maximum_price", Number(maximum));
-    formData.append("categories", category);
+    formData.append("categories", tempCategory);
     formData.append("vendors", vendor);
     formData.append("item_description", description);
 
