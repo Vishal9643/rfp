@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -9,7 +9,18 @@ const ResetPassword = () => {
   const [passwordError, setPasswordError] = useState("");
   const [resp, setResp] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [token, setToken] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    // alert("vishal");
+    const currentPath = location.pathname; // Access the pathname property of location
+    const token = currentPath.split("/")[2];
+    setToken(token);
+    console.log(currentPath);
+    console.log(token);
+  }, []);
 
   const [getData, setData] = useState("");
 
@@ -44,11 +55,11 @@ const ResetPassword = () => {
     const fetchData = async () => {
       toast.warn("Changing Password...");
       const data = await axios.post(
-        "https://rfp-backend.onrender.com/Auth/register",
+        "https://rfp-backend.onrender.com/Auth/forget",
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
