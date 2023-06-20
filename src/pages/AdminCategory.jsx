@@ -13,11 +13,14 @@ const AdminCategory = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get(`http://localhost:4000/Auth/categories`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.get(
+        `https://rfp-backend.onrender.com//Auth/categories`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(data);
       setData(data.data);
     };
@@ -30,7 +33,7 @@ const AdminCategory = () => {
     formData.append("status", status);
 
     const data = await axios.post(
-      `http://localhost:4000/Auth/changecategorystatus`,
+      `https://rfp-backend.onrender.com//Auth/changecategorystatus`,
       formData,
       {
         headers: {

@@ -31,7 +31,7 @@ const CreateCategory = () => {
 
     const fetchData = async () => {
       const data = await axios.post(
-        "http://localhost:4000/Auth/addcategory",
+        "https://rfp-backend.onrender.com//Auth/addcategory",
         formData,
         {
           headers: {

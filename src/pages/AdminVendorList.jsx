@@ -18,11 +18,14 @@ const AdminVendorList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await axios.get("http://localhost:4000/Auth/vendorlist", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const data = await axios.get(
+          "https://rfp-backend.onrender.com//Auth/vendorlist",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setData(data.data);
         console.log(data.data);
       } catch (error) {
@@ -41,7 +44,7 @@ const AdminVendorList = () => {
     const approve = async () => {
       toast.warn("Approving");
       const data = await axios.post(
-        "http://localhost:4000/auth/approvevendor",
+        "https://rfp-backend.onrender.com//auth/approvevendor",
         formData,
         {
           headers: {

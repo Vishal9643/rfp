@@ -195,7 +195,7 @@ const RegisterVendor = () => {
     const fetchData = async () => {
       toast.warn("Registering...");
       const data = await axios.post(
-        "http://localhost:4000/Auth/register",
+        "https://rfp-backend.onrender.com//Auth/register",
         formData,
         {
           headers: {
@@ -219,7 +219,9 @@ const RegisterVendor = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/Auth/category`);
+        const response = await axios.get(
+          `https://rfp-backend.onrender.com//Auth/category`
+        );
         setData(response.data.categories);
         console.log(response.data.categories);
       } catch (error) {

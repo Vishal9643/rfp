@@ -14,7 +14,7 @@ const VendorRfp = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await axios.get(
-        `http://localhost:4000/Auth/rfp/getrfp/${user_id}`,
+        `https://rfp-backend.onrender.com//Auth/rfp/getrfp/${user_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
