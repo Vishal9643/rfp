@@ -27,10 +27,10 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <a href="#" class="waves-effect">
+                <Link to="/user-management" class="waves-effect">
                   <i class="mdi mdi-apps"></i>
                   <span>User Management</span>
-                </a>
+                </Link>
               </li>
 
               <li>

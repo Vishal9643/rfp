@@ -20,6 +20,8 @@ import CreateRfp from "./pages/CreateRfp";
 import AdminQuotes from "./pages/AdminQuotes";
 import ViewCategory from "./pages/ViewCategory";
 import RegisterAdmin from "./pages/RegisterAdmin";
+import ForgetPassword from "./pages/ForgetPassword";
+import UserManagement from "./pages/UserManagement";
 
 // import "./assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css";
 
@@ -30,6 +32,8 @@ function App() {
         <Routes>
           <Route index element={<Login />} />
           <Route path="vendor-registration" element={<RegisterVendor />} />
+          <Route path="forget-password" element={<ForgetPassword />} />
+          <Route path="user-management" element={<UserManagement />} />
           <Route path="admin-registration" element={<RegisterAdmin />} />
           <Route path="admin-Dashboard" element={<AdminDashboard />} />
           <Route path="admin-Category" element={<AdminCategory />} />
