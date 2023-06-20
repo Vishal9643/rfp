@@ -17,11 +17,14 @@ const AdminQuotes = () => {
     const fetchData = async () => {
       const i = localStorage.getItem("quote");
 
-      const data = await axios.get(`/api/rfp/quotes/${i}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.get(
+        `https://rfp-backend.onrender.com/rfp/getquotes/${i}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(data.data);
       if (data.data.response == "error") {
         if (data.data.error) {
