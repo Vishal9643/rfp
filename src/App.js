@@ -22,6 +22,7 @@ import ViewCategory from "./pages/ViewCategory";
 import RegisterAdmin from "./pages/RegisterAdmin";
 import ForgetPassword from "./pages/ForgetPassword";
 import UserManagement from "./pages/UserManagement";
+import ResetPassword from "./pages/ResetPassword";
 
 // import "./assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css";
 
@@ -46,6 +47,9 @@ function App() {
           <Route path="vendor-rfp-apply" element={<RfpApply />} />
           <Route path="admin-create-category" element={<CreateCategory />} />
           <Route path="admin-create-rfp" element={<CreateRfp />} />
+          <Route path="forget-password">
+            <Route path=":id" element={<ResetPassword />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>
