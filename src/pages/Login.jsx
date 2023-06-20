@@ -54,7 +54,7 @@ const Login = () => {
     const fetchData = async () => {
       try {
         const data = await axios.post(
-          "https://rfp-backend.onrender.com//Auth/login",
+          "https://rfp-backend.onrender.com/Auth/login",
           formData,
           {
             headers: {

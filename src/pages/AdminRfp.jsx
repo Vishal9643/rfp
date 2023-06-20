@@ -19,7 +19,7 @@ const AdminRfp = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await axios.get(
-        `https://rfp-backend.onrender.com//Auth/viewrfp`,
+        `https://rfp-backend.onrender.com/Auth/viewrfp`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -77,7 +77,7 @@ const AdminRfp = () => {
 
     const close = async () => {
       const request = await axios.get(
-        `https://rfp-backend.onrender.com//Auth/rfp/closerfp/${id}`,
+        `https://rfp-backend.onrender.com/Auth/rfp/closerfp/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

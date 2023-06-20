@@ -195,7 +195,7 @@ const RegisterVendor = () => {
     const fetchData = async () => {
       toast.warn("Registering...");
       const data = await axios.post(
-        "https://rfp-backend.onrender.com//Auth/register",
+        "https://rfp-backend.onrender.com/Auth/register",
         formData,
         {
           headers: {
@@ -220,7 +220,7 @@ const RegisterVendor = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://rfp-backend.onrender.com//Auth/category`
+          `https://rfp-backend.onrender.com/Auth/category`
         );
         setData(response.data.categories);
         console.log(response.data.categories);

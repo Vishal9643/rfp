@@ -14,7 +14,7 @@ const AdminCategory = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await axios.get(
-        `https://rfp-backend.onrender.com//Auth/categories`,
+        `https://rfp-backend.onrender.com/Auth/categories`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ const AdminCategory = () => {
     formData.append("status", status);
 
     const data = await axios.post(
-      `https://rfp-backend.onrender.com//Auth/changecategorystatus`,
+      `https://rfp-backend.onrender.com/Auth/changecategorystatus`,
       formData,
       {
         headers: {

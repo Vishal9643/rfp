@@ -13,7 +13,7 @@ const ViewCategory = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://rfp-backend.onrender.com//Auth/categories`,
+          `https://rfp-backend.onrender.com/Auth/categories`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

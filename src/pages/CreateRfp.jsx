@@ -89,7 +89,7 @@ const CreateRfp = () => {
 
     const fetchData = async () => {
       const response = await axios.post(
-        "https://rfp-backend.onrender.com//Auth/createrfp",
+        "https://rfp-backend.onrender.com/Auth/createrfp",
         formData,
         {
           headers: {
@@ -111,7 +111,7 @@ const CreateRfp = () => {
   useEffect(() => {
     const fetchVendor = async () => {
       const response = await axios.get(
-        "https://rfp-backend.onrender.com//Auth/vendorlist",
+        "https://rfp-backend.onrender.com/Auth/vendorlist",
         {
           headers: {
             Authorization: `Bearer ${token}`,

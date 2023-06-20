@@ -19,7 +19,7 @@ const AdminVendorList = () => {
     const fetchData = async () => {
       try {
         const data = await axios.get(
-          "https://rfp-backend.onrender.com//Auth/vendorlist",
+          "https://rfp-backend.onrender.com/Auth/vendorlist",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ const AdminVendorList = () => {
     const approve = async () => {
       toast.warn("Approving");
       const data = await axios.post(
-        "https://rfp-backend.onrender.com//auth/approvevendor",
+        "https://rfp-backend.onrender.com/auth/approvevendor",
         formData,
         {
           headers: {

@@ -33,7 +33,7 @@ const RfpApply = () => {
 
     const fetchData = async () => {
       const data = await axios.post(
-        `https://rfp-backend.onrender.com//Auth/applyrfp/${apply}`,
+        `https://rfp-backend.onrender.com/Auth/applyrfp/${apply}`,
         formData,
         {
           headers: {
