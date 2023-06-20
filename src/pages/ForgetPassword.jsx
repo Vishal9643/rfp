@@ -38,7 +38,7 @@ const ForgetPassword = () => {
     const fetchData = async () => {
       toast.warn("Sending Link to registered Mail...");
       const data = await axios.post(
-        "https://rfp-backend.onrender.com/Auth/register",
+        "https://rfp-backend.onrender.com/Auth/reset",
         formData,
         {
           headers: {
@@ -51,7 +51,7 @@ const ForgetPassword = () => {
         toast.error(data.data.error);
       }
       if (data.data.response === "success") {
-        toast.success("Registration Successful");
+        toast.success("Link send on registered mail");
       }
       setResp(data.data);
     };
