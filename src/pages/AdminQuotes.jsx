@@ -18,7 +18,7 @@ const AdminQuotes = () => {
       const i = localStorage.getItem("quote");
 
       const data = await axios.get(
-        `https://rfp-backend.onrender.com/rfp/getquotes/${i}`,
+        `https://rfp-backend.onrender.com/Auth/rfp/getquotes/${i}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
