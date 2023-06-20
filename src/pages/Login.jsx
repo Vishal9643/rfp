@@ -218,7 +218,7 @@ const Login = () => {
                           </div>
                           <div className="mt-4 text-center">
                             <Link
-                              to="/vendor-registration"
+                              to="/admin-registration"
                               className="text-muted"
                             >
                               <i className="mdi mdi-lock mr-1"></i> Register as

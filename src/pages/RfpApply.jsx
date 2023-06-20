@@ -22,6 +22,7 @@ const RfpApply = () => {
   const formData = new FormData();
   formData.append("item_price", Number(price));
   formData.append("total_cost", Number(cost));
+  formData.append("quantity", quantity);
 
   const handleApply = (e) => {
     e.preventDefault();

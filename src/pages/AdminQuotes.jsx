@@ -17,191 +17,168 @@ const AdminQuotes = () => {
     const fetchData = async () => {
       const i = localStorage.getItem("quote");
 
-      const data = await axios.get(
-        `https://rfp-backend.onrender.com/Auth/rfp/getquotes/${i}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      try {
+        const response = await axios.get(
+          `https://rfp-backend.onrender.com/Auth/rfp/getquotes/${i}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = response.data;
+        console.log(data);
+
+        if (data.response === "error") {
+          if (data.error) {
+            toast.error(data.error);
+          }
         }
-      );
-      console.log(data.data);
-      if (data.data.response == "error") {
-        if (data.data.error) {
-          toast.error(data.data.error);
-        }
+
+        setData(data);
+      } catch (error) {
+        console.error(error);
+        toast.error("Error retrieving quotes. Please try again later.");
       }
-      setData(data.data);
     };
+
     fetchData();
   }, []);
-
-  console.log(getData);
 
   // Logic for pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems =
-    getData.response == "success" && getData.rfps
+    getData.response === "success" && getData.quotes
       ? getData.quotes.slice(indexOfFirstItem, indexOfLastItem)
-      : "";
-  // const currentItems =
-  //   getData.response != "error" ? (
-  //     getData.slice(indexOfFirstItem, indexOfLastItem)
-  //   ) : (
-  //     <h2>Nothing to show</h2>
-  //   );
-  //   getData.slice(indexOfFirstItem, indexOfLastItem);
+      : [];
 
   // Change page
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
   const type = localStorage.getItem("type");
 
   const applyData = (apply) => {
     alert(apply);
     localStorage.setItem("quote", apply);
   };
+
   return (
     <div>
       <ToastContainer />
-      {type == "admin" ? (
+      {type === "admin" ? (
         <body data-sidebar="dark">
           <div id="layout-wrapper">
             <Navbar />
             <Sidebar />
 
-            {/* {getData.response != "error" ? ( */}
-            <div class="main-content">
-              <div class="page-content">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="page-title-box d-flex align-items-center justify-content-between">
-                        <h4 class="mb-0 font-size-18">RFP Quotes</h4>
-                        <div class="page-title-right">
-                          <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item">
+            <div className="main-content">
+              <div className="page-content">
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="page-title-box d-flex align-items-center justify-content-between">
+                        <h4 className="mb-0 font-size-18">RFP Quotes</h4>
+                        <div className="page-title-right">
+                          <ol className="breadcrumb m-0">
+                            <li className="breadcrumb-item">
                               <a href="javascript: void(0);">Quotes</a>
                             </li>
-                            <li class="breadcrumb-item active">RFP Quotes</li>
+                            <li className="breadcrumb-item active">
+                              RFP Quotes
+                            </li>
                           </ol>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="TableHeader">
-                            <div class="row">
-                              <div class="col-lg-3">
-                                <h4 class="card-title">RFP</h4>
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <div className="card">
+                        <div className="card-body">
+                          <div className="TableHeader">
+                            <div className="row">
+                              <div className="col-lg-3">
+                                <h4 className="card-title">RFP</h4>
                               </div>
-                              <div class="col-lg-9 text-right">
-                                <div class="headerButtons">
+                              <div className="col-lg-9 text-right">
+                                <div className="headerButtons">
                                   <Link
                                     to="/admin-create-rfp"
-                                    class="btn btn-sm btn-success "
+                                    className="btn btn-sm btn-success"
                                   >
-                                    <i class="mdi mdi-plus"></i> Add RFP
+                                    <i className="mdi mdi-plus"></i> Add RFP
                                   </Link>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div class="table-responsive">
+                          <div className="table-responsive">
                             <table
-                              class="table mb-0 listingData dt-responsive"
+                              className="table mb-0 listingData dt-responsive"
                               id="datatable"
                             >
                               <thead>
                                 <tr>
                                   <th>S No.</th>
+                                  <th>RFP ID</th>
                                   <th>Vendor ID</th>
                                   <th>Name</th>
-                                  <th>Vendor ID</th>
+                                  <th>Item Price</th>
+                                  <th>Quantity</th>
                                   <th>Vendor Price</th>
-                                  {/* <th>Quantity</th>
-                                  <th>Total Price</th> */}
                                 </tr>
                               </thead>
                               <tbody>
-                                {getData.response == "error"
-                                  ? "No Quotes Available"
-                                  : ""}
-                                {currentItems &&
-                                  currentItems.quotes &&
-                                  currentItems.quotes.map((data, index) => (
-                                    <tr>
+                                {getData.response === "error" ? (
+                                  <tr>
+                                    <td colSpan="5">No Quotes Available</td>
+                                  </tr>
+                                ) : (
+                                  currentItems.map((data, index) => (
+                                    <tr key={index}>
                                       <th scope="row">{index + 1}</th>
-                                      <td>{data.quotes.vendor_id}</td>
-                                      <td>{data.quotes.name}</td>
-                                      <td>{data.quotes.item_price}</td>
-                                      <td>{data.quotes.total_cost}</td>
-                                      {/* <td>
-                                        <span className="badge badge-pill badge-success">
-                                          Open
-                                        </span>
-                                      </td>
-                                      <td>
-                                        <Link
-                                          to="/admin-quotes"
-                                          title="View RPF Details"
-                                          className="text-success"
-                                          onClick={() => {
-                                            applyData(data.rfp[0].id);
-                                          }}
-                                        >
-                                          <i className="mdi mdi-eye"></i>
-                                        </Link>
-                                        <a
-                                          href="#"
-                                          title="Close RFP"
-                                          className="text-danger"
-                                        >
-                                          <i className="mdi mdi-circle-off-outline"></i>
-                                        </a>
-                                      </td> */}
+                                      <td>{data.id}</td>
+                                      <td>{data.vendor_id}</td>
+                                      <td>{data.name}</td>
+                                      <td>{data.item_price}</td>
+                                      <td>{data.quantity}</td>
+                                      <td>{data.total_cost}</td>
                                     </tr>
-                                  ))}
+                                  ))
+                                )}
                               </tbody>
                             </table>
                           </div>
 
-                          <div class="row pt-3">
-                            <div class="col-sm-12 col-md-5">
+                          <div className="row pt-3">
+                            <div className="col-sm-12 col-md-5">
                               <div
-                                class="dataTables_info"
+                                className="dataTables_info"
                                 id="datatable_info"
                                 role="status"
                                 aria-live="polite"
                               >
                                 Showing {indexOfFirstItem + 1} to{" "}
-                                {getData &&
-                                  getData.quotes &&
-                                  Math.min(
-                                    indexOfLastItem,
-                                    getData.quotes.length
-                                  )}{" "}
-                                of{" "}
-                                {getData &&
-                                  getData.quotes &&
-                                  getData.quotes.length}{" "}
-                                entries
+                                {Math.min(
+                                  indexOfLastItem,
+                                  getData.quotes?.length
+                                )}{" "}
+                                of {getData.quotes?.length || 0} entries
                               </div>
                             </div>
-                            <div class="col-sm-12 col-md-7 dataTables_wrapper ">
+                            <div className="col-sm-12 col-md-7 dataTables_wrapper">
                               <div
-                                class="dataTables_paginate paging_simple_numbers"
+                                className="dataTables_paginate paging_simple_numbers"
                                 id="datatable_paginate"
                               >
-                                <ul class="pagination">
+                                <ul className="pagination">
                                   <li
-                                    class={`paginate_button page-item previous ${
+                                    className={`paginate_button page-item previous ${
                                       currentPage === 1 ? "disabled" : ""
                                     }`}
                                     id="datatable_previous"
@@ -210,15 +187,14 @@ const AdminQuotes = () => {
                                       href="#"
                                       aria-controls="datatable"
                                       data-dt-idx="0"
-                                      tabindex="0"
-                                      class="page-link"
+                                      tabIndex="0"
+                                      className="page-link"
                                       onClick={() => paginate(currentPage - 1)}
                                     >
                                       Previous
                                     </a>
                                   </li>
-                                  {getData &&
-                                    getData.quotes &&
+                                  {getData.quotes &&
                                     Array.from(
                                       {
                                         length: Math.ceil(
@@ -228,7 +204,7 @@ const AdminQuotes = () => {
                                       (_, i) => (
                                         <li
                                           key={i}
-                                          class={`paginate_button page-item ${
+                                          className={`paginate_button page-item ${
                                             currentPage === i + 1
                                               ? "active"
                                               : ""
@@ -238,8 +214,8 @@ const AdminQuotes = () => {
                                             href="#"
                                             aria-controls="datatable"
                                             data-dt-idx={i + 1}
-                                            tabindex="0"
-                                            class="page-link"
+                                            tabIndex="0"
+                                            className="page-link"
                                             onClick={() => paginate(i + 1)}
                                           >
                                             {i + 1}
@@ -248,11 +224,10 @@ const AdminQuotes = () => {
                                       )
                                     )}
                                   <li
-                                    class={`paginate_button page-item next ${
-                                      currentPage === getData &&
-                                      getData.quotes &&
+                                    className={`paginate_button page-item next ${
+                                      currentPage ===
                                       Math.ceil(
-                                        getData.quotes.length / itemsPerPage
+                                        getData.quotes?.length / itemsPerPage
                                       )
                                         ? "disabled"
                                         : ""
@@ -263,8 +238,8 @@ const AdminQuotes = () => {
                                       href="#"
                                       aria-controls="datatable"
                                       data-dt-idx="2"
-                                      tabindex="0"
-                                      class="page-link"
+                                      tabIndex="0"
+                                      className="page-link"
                                       onClick={() => paginate(currentPage + 1)}
                                     >
                                       Next
@@ -281,14 +256,22 @@ const AdminQuotes = () => {
                 </div>
               </div>
 
-              <footer class="footer">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-sm-6">2022 &copy; Copyright.</div>
-                    <div class="col-sm-6">
-                      <div class="text-sm-right d-none d-sm-block">
+              <footer className="footer">
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col-sm-6">
+                      {" "}
+                      {new Date().getFullYear()} &copy; Copyright.
+                    </div>
+                    <div className="col-sm-6">
+                      <div className="text-sm-right d-none d-sm-block">
                         Support Email:
-                        <a href="#" target="_blank" class="text-muted">
+                        <a
+                          href="#"
+                          target="_blank"
+                          className="text-muted"
+                          rel="noopener noreferrer"
+                        >
                           {" "}
                           support@velsof.com{" "}
                         </a>
@@ -298,41 +281,38 @@ const AdminQuotes = () => {
                 </div>
               </footer>
             </div>
-            {/* ) : ( */}
-            <div class="main-content">
-              <div class="page-content">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="page-title-box d-flex align-items-center justify-content-between">
-                        <h4 class="mb-0 font-size-18">RFP Quotes</h4>
-                        <div class="page-title-right">
-                          <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item">
-                              <a href="javascript: void(0);">Quotes</a>
-                            </li>
-                            <li class="breadcrumb-item active">RFP Quotes</li>
-                          </ol>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="card">
-                        <div class="card-body">Error with backend</div>
-                      </div>
+          </div>
+        </body>
+      ) : (
+        <div className="main-content">
+          <div className="page-content">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-12">
+                  <div className="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 className="mb-0 font-size-18">RFP Quotes</h4>
+                    <div className="page-title-right">
+                      <ol className="breadcrumb m-0">
+                        <li className="breadcrumb-item">
+                          <a href="javascript: void(0);">Quotes</a>
+                        </li>
+                        <li className="breadcrumb-item active">RFP Quotes</li>
+                      </ol>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="card">
+                    <div className="card-body">Error with backend</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            {/* )} */}
           </div>
-        </body>
-      ) : (
-        <Navigate to="/vendor-dashboard" />
+        </div>
       )}
     </div>
   );
