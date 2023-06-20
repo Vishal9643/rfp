@@ -10,6 +10,7 @@ const AdminRfp = () => {
   const [getData, setData] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const [closedRfp, setClosedRfp] = useState("");
 
   const token = localStorage.getItem("Authorization");
   let arr = [];
@@ -17,7 +18,7 @@ const AdminRfp = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get(`/api/rfp/getrfp/${user_id}`, {
+      const data = await axios.get(`http://localhost:4000/Auth/viewrfp`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -27,7 +28,7 @@ const AdminRfp = () => {
     };
 
     fetchData();
-  }, []);
+  }, [closedRfp]);
   // useEffect(() => {
   //   const fetchData = async () => {
   //     const requests = [];
@@ -72,11 +73,15 @@ const AdminRfp = () => {
     toast.warn(`Closing RFP ${id}`);
 
     const close = async () => {
-      const request = await axios.put(`/api/rfp/closerfp/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const request = await axios.get(
+        `http://localhost:4000/Auth/rfp/closerfp/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setClosedRfp(request.data);
       console.log(request.data);
       if (request.data.response == "error") {
         toast.error(request.data.errors);
@@ -169,9 +174,15 @@ const AdminRfp = () => {
                                       <td>{data.minimum_price}</td>
                                       <td>{data.maximum_price}</td>
                                       <td>
-                                        <span className="badge badge-pill badge-success">
-                                          Open
-                                        </span>
+                                        {data.status === "closed" ? (
+                                          <span class="badge badge-pill badge-danger">
+                                            Closed
+                                          </span>
+                                        ) : (
+                                          <span class="badge badge-pill badge-success">
+                                            Open
+                                          </span>
+                                        )}
                                       </td>
                                       <td>
                                         <Link

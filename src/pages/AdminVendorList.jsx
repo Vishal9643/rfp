@@ -18,7 +18,7 @@ const AdminVendorList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await axios.get("/api/vendorlist", {
+        const data = await axios.get("http://localhost:4000/Auth/vendorlist", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -37,15 +37,18 @@ const AdminVendorList = () => {
     const formData = new FormData();
     formData.append("user_id", Number(user_id));
     formData.append("status", "approved");
-    formData.append("_method", "put");
 
     const approve = async () => {
       toast.warn("Approving");
-      const data = await axios.post("/api/approveVendor", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.post(
+        "http://localhost:4000/auth/approvevendor",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(data.data);
       if (data.data.response == "error") {
         toast.error("Error in Approving Vendor");

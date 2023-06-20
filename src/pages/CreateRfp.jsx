@@ -88,11 +88,15 @@ const CreateRfp = () => {
     formData.append("item_description", description);
 
     const fetchData = async () => {
-      const response = await axios.post("api/createrfp", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:4000/Auth/createrfp",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response.data);
       if (response.data.response == "error") {
         toast.error("There is some problem in creating RFP");
@@ -106,13 +110,19 @@ const CreateRfp = () => {
 
   useEffect(() => {
     const fetchVendor = async () => {
-      const response = await axios.get("/api/vendorlist", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:4000/Auth/vendorlist",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response.data.vendors);
-      setVendorData(response.data.vendors);
+      const filteredVendors = response.data.vendors.filter(
+        (vendor) => vendor.category === tempCategory
+      );
+      setVendorData(filteredVendors);
     };
     fetchVendor();
   }, []);
@@ -263,14 +273,15 @@ const CreateRfp = () => {
                                   onChange={handleVendor}
                                 >
                                   <option value="">Select Vendor</option>
-                                  {vendorData.map((vendor) => (
-                                    <option
-                                      key={vendor.user_id}
-                                      value={vendor.user_id}
-                                    >
-                                      {vendor.name}
-                                    </option>
-                                  ))}
+                                  {vendorData &&
+                                    vendorData.map((vendor) => (
+                                      <option
+                                        key={vendor.user_id}
+                                        value={vendor.user_id}
+                                      >
+                                        {vendor.name}
+                                      </option>
+                                    ))}
                                 </select>
                               </div>
 

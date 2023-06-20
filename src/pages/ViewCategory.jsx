@@ -12,12 +12,16 @@ const ViewCategory = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/categories`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `http://localhost:4000/Auth/categories`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setData(response.data.categories);
+        console.log(response.data.categories);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -94,11 +98,14 @@ const ViewCategory = () => {
                                   onChange={handleCategorySelection}
                                 >
                                   <option value="">Select Category</option>
-                                  {Object.entries(getData).map(([id, name]) => (
-                                    <option key={id} value={id}>
-                                      {name}
-                                    </option>
-                                  ))}
+                                  {Object.entries(getData).map(
+                                    ([id, category]) =>
+                                      category.status === "active" && (
+                                        <option key={id} value={id}>
+                                          {category.name}
+                                        </option>
+                                      )
+                                  )}
                                 </select>
                               </div>
                             </form>

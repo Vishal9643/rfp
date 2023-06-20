@@ -13,11 +13,14 @@ const VendorRfp = () => {
   const user_id = localStorage.getItem("user_id");
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get(`/api/rfp/getrfp/${user_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.get(
+        `http://localhost:4000/Auth/rfp/getrfp/${user_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(data.data);
       // const requests = [];
       // for (let i = 1; i < 10; i++) {

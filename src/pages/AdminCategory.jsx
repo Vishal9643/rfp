@@ -9,10 +9,11 @@ const AdminCategory = () => {
   const token = localStorage.getItem("Authorization");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get(`/api/categories`, {
+      const data = await axios.get(`http://localhost:4000/Auth/categories`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -21,7 +22,24 @@ const AdminCategory = () => {
       setData(data.data);
     };
     fetchData();
-  }, []);
+  }, [status]);
+
+  const changeStatus = async (status, name) => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("status", status);
+
+    const data = await axios.post(
+      `http://localhost:4000/Auth/changecategorystatus`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setStatus(data.data);
+  };
 
   console.log(getData);
 
@@ -100,6 +118,7 @@ const AdminCategory = () => {
                                 <tbody>
                                   {getData &&
                                     getData.categories &&
+                                    getData.categories &&
                                     Object.entries(getData.categories)
                                       .slice(
                                         (currentPage - 1) * itemsPerPage,
@@ -112,30 +131,55 @@ const AdminCategory = () => {
                                               index +
                                               1}
                                           </th>
-                                          <td>{value}</td>
+                                          <td>{value.name}</td>
                                           {/* <td>{data.rfp[0].last_date}</td>
                                       <td>{data.rfp[0].minimum_price}</td>
                                       <td>{data.rfp[0].maximum_price}</td> */}
                                           <td>
-                                            <span className="badge badge-pill badge-success">
-                                              Open
-                                            </span>
+                                            {value.status == "active" ? (
+                                              <span className="badge badge-pill badge-success">
+                                                {value.status}
+                                              </span>
+                                            ) : (
+                                              <span className="badge badge-pill badge-danger">
+                                                {value.status}
+                                              </span>
+                                            )}
                                           </td>
                                           <td>
-                                            <a
-                                              href="#"
-                                              title="View RPF Details"
-                                              className="text-success"
-                                            >
-                                              <i className="mdi mdi-eye"></i>
-                                            </a>
-                                            <a
-                                              href="#"
-                                              title="Close RFP"
-                                              className="text-danger"
-                                            >
-                                              <i className="mdi mdi-circle-off-outline"></i>
-                                            </a>
+                                            {value.status == "active" ? (
+                                              <span
+                                                style={{
+                                                  color: "red",
+                                                  fontStyle: "italic",
+                                                  cursor: "pointer",
+                                                }}
+                                                onClick={() =>
+                                                  changeStatus(
+                                                    "Inactive",
+                                                    value.name
+                                                  )
+                                                }
+                                              >
+                                                deactivate
+                                              </span>
+                                            ) : (
+                                              <span
+                                                style={{
+                                                  color: "green",
+                                                  fontStyle: "italic",
+                                                  cursor: "pointer",
+                                                }}
+                                                onClick={() =>
+                                                  changeStatus(
+                                                    "active",
+                                                    value.name
+                                                  )
+                                                }
+                                              >
+                                                activate
+                                              </span>
+                                            )}
                                           </td>
                                         </tr>
                                       ))}

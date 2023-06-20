@@ -30,11 +30,15 @@ const CreateCategory = () => {
     const token = localStorage.getItem("Authorization");
 
     const fetchData = async () => {
-      const data = await axios.post("/api/categories", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.post(
+        "http://localhost:4000/Auth/addcategory",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(data.data);
       if (data.data.response == "error") {
         toast.error("error in adding category");

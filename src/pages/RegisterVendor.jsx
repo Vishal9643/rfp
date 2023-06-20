@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,6 +31,8 @@ const RegisterVendor = () => {
   const [resp, setResp] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const [getData, setData] = useState("");
 
   const handleFirstName = (e) => {
     const input = e.target.value;
@@ -188,14 +190,19 @@ const RegisterVendor = () => {
     formData.append("pancard_no", pancard_no);
     formData.append("gst_no", gst_no);
     formData.append("mobile", mobile);
+    formData.append("type", "vendor");
 
     const fetchData = async () => {
       toast.warn("Registering...");
-      const data = await axios.post("/api/registervendor", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const data = await axios.post(
+        "http://localhost:4000/Auth/register",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log(data.data);
       if (data.data.response === "error") {
         toast.error(data.data.error);
@@ -208,6 +215,20 @@ const RegisterVendor = () => {
 
     fetchData();
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/Auth/category`);
+        setData(response.data.categories);
+        console.log(response.data.categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -434,10 +455,14 @@ const RegisterVendor = () => {
                                   onChange={handleCategory}
                                 >
                                   <option value="">All Categories</option>
-                                  <option value="1">Software</option>
-                                  <option value="2">Hardware</option>
-                                  <option value="3">Office Furniture</option>
-                                  <option value="4">Stationery</option>
+                                  {Object.entries(getData).map(
+                                    ([id, category]) =>
+                                      category.status === "active" && (
+                                        <option key={id} value={id}>
+                                          {category.name}
+                                        </option>
+                                      )
+                                  )}
                                 </select>
                                 {categoryError && (
                                   <span className="text-danger">

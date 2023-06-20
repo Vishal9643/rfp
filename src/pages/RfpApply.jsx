@@ -22,7 +22,6 @@ const RfpApply = () => {
   const formData = new FormData();
   formData.append("item_price", Number(price));
   formData.append("total_cost", Number(cost));
-  formData.append("_method", "put");
 
   const handleApply = (e) => {
     e.preventDefault();
@@ -33,11 +32,15 @@ const RfpApply = () => {
     }
 
     const fetchData = async () => {
-      const data = await axios.post(`/api/rfp/apply/${apply}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.post(
+        `http://localhost:4000/Auth/applyrfp/${apply}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (data.data.response == "error") {
         toast.error("problem in applying RFP");
       }

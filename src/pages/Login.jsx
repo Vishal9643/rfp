@@ -53,11 +53,15 @@ const Login = () => {
 
     const fetchData = async () => {
       try {
-        const data = await axios.post("/api/login", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const data = await axios.post(
+          "http://localhost:4000/Auth/login",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
         localStorage.setItem("Name", data.data.name);
         localStorage.setItem("type", data.data.type);
         localStorage.setItem("Authorization", data.data.token);
