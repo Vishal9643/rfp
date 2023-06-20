@@ -18,7 +18,7 @@ const ResetPassword = () => {
     const currentPath = location.pathname; // Access the pathname property of location
     const token = currentPath.split("/")[2];
     setToken(token);
-    console.log(currentPath);
+    // console.log(currentPath);
     console.log(token);
   }, []);
 
