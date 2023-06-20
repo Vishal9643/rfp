@@ -294,11 +294,12 @@ const RegisterAdmin = () => {
                               </div>
                             </div>
 
-                            <div class="p-2 mt-3">
+                            <div class="col-12">
                               <button
                                 class="btn btn-primary btn-block waves-effect waves-light"
                                 type="button"
                                 onClick={handleRegister}
+                                style={{ width: "100%" }}
                               >
                                 Register
                               </button>
