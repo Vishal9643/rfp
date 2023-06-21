@@ -143,7 +143,7 @@ const AdminQuotes = () => {
                                     <tr key={index}>
                                       <th scope="row">{index + 1}</th>
                                       <td>{data.id}</td>
-                                      <td>{data.vendor_id}</td>
+                                      <td>{data.rfp_no}</td>
                                       <td>{data.name}</td>
                                       <td>{data.item_price}</td>
                                       <td>{data.quantity}</td>
