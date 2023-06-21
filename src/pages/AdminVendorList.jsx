@@ -35,11 +35,12 @@ const AdminVendorList = () => {
     fetchData();
   }, [approve]);
 
-  const approveVendor = (user_id) => {
+  const approveVendor = (user_id, email) => {
     // alert(user_id);
     const formData = new FormData();
     formData.append("user_id", Number(user_id));
     formData.append("status", "approved");
+    formData.append("email", email);
 
     const approve = async () => {
       toast.warn("Approving");
@@ -231,7 +232,10 @@ const AdminVendorList = () => {
                                             background: "none",
                                           }}
                                           onClick={() =>
-                                            approveVendor(vendor.user_id)
+                                            approveVendor(
+                                              vendor.user_id,
+                                              vendor.email
+                                            )
                                           }
                                         >
                                           <i class="mdi mdi-circle-off-outline"></i>
