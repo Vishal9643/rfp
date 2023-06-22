@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/Auth/*"
+  to = "https://rfp-backend.onrender.com"
+  status = 200
