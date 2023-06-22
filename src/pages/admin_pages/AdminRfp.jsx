@@ -26,11 +26,14 @@ const AdminRfp = () => {
   //function to view rfp
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get(`/Auth/viewrfp`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.get(
+        `${process.env.REACT_APP_API}/Auth/viewrfp`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(data.data);
       setData(data.data);
       setIsLoading(false); // Set isLoading to false after data is fetched
@@ -64,11 +67,14 @@ const AdminRfp = () => {
     toast.warn(`Closing RFP ${id}`);
 
     const close = async () => {
-      const request = await axios.get(`/Auth/rfp/closerfp/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const request = await axios.get(
+        `${process.env.REACT_APP_API}/Auth/rfp/closerfp/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setClosedRfp(request.data);
 
       if (request.data.response == "error") {

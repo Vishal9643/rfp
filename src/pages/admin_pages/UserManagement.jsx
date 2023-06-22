@@ -24,11 +24,14 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await axios.get("/Auth/vendorlist", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const data = await axios.get(
+          `${process.env.REACT_APP_API}/Auth/vendorlist`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setData(data.data);
 
         setIsLoading(false); // Set isLoading to false after data is fetched
@@ -48,11 +51,15 @@ const UserManagement = () => {
     //sending data to backend server
     const remove = async () => {
       toast.warn("Removing");
-      const data = await axios.post("/auth/removevendor", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.post(
+        `${process.env.REACT_APP_API}/Auth/removevendor`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       //error message
       if (data.data.response == "error") {

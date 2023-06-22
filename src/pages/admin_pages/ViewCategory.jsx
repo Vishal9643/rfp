@@ -13,11 +13,14 @@ const ViewCategory = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/Auth/categories`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/Auth/categories`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setData(response.data.categories);
         setIsLoading(false); // Set isLoading to false after data is fetched
       } catch (error) {

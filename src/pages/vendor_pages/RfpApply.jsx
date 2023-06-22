@@ -26,11 +26,15 @@ const RfpApply = () => {
 
     //sending data to backend server
     const fetchData = async () => {
-      const data = await axios.post(`/Auth/applyrfp/${apply}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.post(
+        `${process.env.REACT_APP_API}/Auth/applyrfp/${apply}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       // error message
       if (data.data.response === "error") {

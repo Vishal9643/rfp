@@ -26,11 +26,14 @@ const AdminCategory = () => {
   //Fetching categories from the DB
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get(`/Auth/categories`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.get(
+        `${process.env.REACT_APP_API}/Auth/categories`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       //storing response in state variable
       setData(data.data);
@@ -57,11 +60,15 @@ const AdminCategory = () => {
     }
 
     //sending data to backend server
-    const data = await axios.post(`/Auth/changecategorystatus`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const data = await axios.post(
+      `${process.env.REACT_APP_API}/Auth/changecategorystatus`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     //storing status in state variable
     setStatus(data.data);

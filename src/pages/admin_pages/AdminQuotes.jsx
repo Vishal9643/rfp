@@ -25,11 +25,14 @@ const AdminQuotes = () => {
       const i = localStorage.getItem("quote");
 
       try {
-        const response = await axios.get(`/Auth/rfp/getquotes/${i}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/Auth/rfp/getquotes/${i}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = response.data;
 

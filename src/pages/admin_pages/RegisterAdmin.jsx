@@ -122,11 +122,15 @@ const RegisterAdmin = () => {
       toast.warn("Registering...");
 
       //sending data to the backend to register admin
-      const data = await axios.post("/Auth/register", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const data = await axios.post(
+        `${process.env.REACT_APP_API}/Auth/register`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       //error message
       if (data.data.response === "error") {

@@ -48,11 +48,15 @@ const ForgetPassword = () => {
     //sending email to the backend to forget password
     const submittingData = async () => {
       toast.warn("Sending Link to registered Mail...");
-      const data = await axios.post("/Auth/reset", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const data = await axios.post(
+        `${process.env.REACT_APP_API}/Auth/reset`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       //error message
       if (data.data.response === "error") {

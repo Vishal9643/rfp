@@ -41,11 +41,15 @@ const CreateCategory = () => {
 
     //sending datato backend
     const addCategoryData = async () => {
-      const data = await axios.post("/Auth/addcategory", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.post(
+        `${process.env.REACT_APP_API}/Auth/addcategory`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       //error messsage
       if (data.data.response == "error") {

@@ -70,11 +70,15 @@ const ResetPassword = () => {
     //sending data to backend
     const sendData = async () => {
       toast.warn("Changing Password...");
-      const data = await axios.post("/Auth/forget", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.post(
+        `${process.env.REACT_APP_API}/Auth/forget`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       //error message
       if (data.data.response === "error") {

@@ -71,11 +71,15 @@ const CreateRfp = () => {
 
     //sending data to backend
     const createRFPData = async () => {
-      const response = await axios.post("/Auth/createrfp", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/Auth/createrfp`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       //error message
       if (response.data.response == "error") {
@@ -129,11 +133,14 @@ const CreateRfp = () => {
   //function to get vendor list
   useEffect(() => {
     const fetchVendor = async () => {
-      const response = await axios.get("/Auth/vendorlist", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_API}/Auth/vendorlist`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response.data.vendors);
       const filteredVendors = response.data.vendors.filter(
         (vendor) => vendor.category === category

@@ -20,11 +20,14 @@ const VendorRfp = () => {
   //functionm to fetch the rfp
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get(`/Auth/rfp/getrfp/${user_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const data = await axios.get(
+        `${process.env.REACT_APP_API}/Auth/rfp/getrfp/${user_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setData(data.data);
       setIsLoading(false); // Set isLoading to false after data is fetched
