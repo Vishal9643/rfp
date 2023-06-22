@@ -204,19 +204,23 @@ const AdminRfp = () => {
                                     >
                                       <i className="mdi mdi-eye"></i>
                                     </Link>
-                                    <button
-                                      title="Close RFP"
-                                      className="text-danger"
-                                      onClick={() => {
-                                        closeRFP(data.id);
-                                      }}
-                                      style={{
-                                        border: "none",
-                                        background: "none",
-                                      }}
-                                    >
-                                      <i className="mdi mdi-circle-off-outline"></i>
-                                    </button>
+                                    {data.status === "closed" ? (
+                                      ""
+                                    ) : (
+                                      <button
+                                        title="Close RFP"
+                                        className="text-danger"
+                                        onClick={() => {
+                                          closeRFP(data.id);
+                                        }}
+                                        style={{
+                                          border: "none",
+                                          background: "none",
+                                        }}
+                                      >
+                                        <i className="mdi mdi-circle-off-outline"></i>
+                                      </button>
+                                    )}
                                   </td>
                                 </tr>
                               ))}
