@@ -244,7 +244,9 @@ const RegisterVendor = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/Auth/category`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/Auth/category`
+        );
         setData(response.data.categories);
       } catch (error) {
         toast.error("Error fetching categories");
