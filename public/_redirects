@@ -1,4 +1,2 @@
-/Auth/* https://rfp-backend.onrender.com/:splat 200
-/* /index.html 200
-  
-
+/Auth/* https://rfp-backend.onrender.com/:splat 200!
+/* /index.html 200 
