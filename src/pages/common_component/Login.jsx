@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import "../assets/css/bootstrap.min.css";
-import "../assets/css/icons.min.css";
-import "../assets/css/app.min.css";
+import "../../assets/css/bootstrap.min.css";
+import "../../assets/css/icons.min.css";
+import "../../assets/css/app.min.css";
 import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../../assets/css/preloader.css";
 
 const Login = () => {
+  // State variables to store form input values and error messages
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [resp, setResp] = useState("");
 
+  // Handler for email input change
   const handleEmail = (e) => {
     const input = e.target.value;
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex to validate email format
@@ -25,23 +28,28 @@ const Login = () => {
     }
   };
 
+  // Handler for password input change
   const handlePassword = (e) => {
     const input = e.target.value;
-    const regex = /^[a-zA-Z0-9]*$/; // Regex to validate password format (at least 8 characters, one uppercase, one lowercase, and one digit)
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*]).{8,}$/;
     if (regex.test(input)) {
       setPassword(input);
       setPasswordError("");
     } else {
-      setPasswordError("Invalid password");
+      setPasswordError(
+        "Invalid password, Password must be of 8 Characters and must contain one special character, one Uppercase and one Lower case letter and one number"
+      );
     }
   };
 
+  // Handler for login form submission
   const handleLogin = (e) => {
     e.preventDefault();
-    // alert(email);
-    // alert(password);
     if (!email || !password) {
       // Check if any mandatory field is empty
+      setEmailError("Email is required");
+
+      setPasswordError("Password is required");
       toast.error("Please fill in all the mandatory fields.");
       return;
     }
@@ -53,15 +61,11 @@ const Login = () => {
 
     const fetchData = async () => {
       try {
-        const data = await axios.post(
-          "https://rfp-backend.onrender.com/Auth/login",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const data = await axios.post("/Auth/login", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
         localStorage.setItem("Name", data.data.name);
         localStorage.setItem("type", data.data.type);
         localStorage.setItem("Authorization", data.data.token);
@@ -85,21 +89,20 @@ const Login = () => {
   return (
     <>
       <ToastContainer />
+
       {resp.response === "success" ? (
+        // If login is successful, navigate to the appropriate dashboard based on user type
         <>
-          {resp.type == "admin" ? (
+          {resp.type === "admin" ? (
             <Navigate to="/admin-dashboard" />
           ) : (
             <Navigate to="/vendor-dashboard" />
           )}
         </>
       ) : (
+        // If login is unsuccessful, display the login form
         <div>
-          <div className="home-btn d-none d-sm-block">
-            <a href="index.html" className="text-dark">
-              <i className="fas fa-home h2"></i>
-            </a>
-          </div>
+          <div className="home-btn d-none d-sm-block"></div>
           <div className="account-pages my-5 pt-sm-5">
             <div className="container">
               <div className="row justify-content-center">
@@ -124,7 +127,7 @@ const Login = () => {
                           action="dashboard.html"
                         >
                           <div className="form-group">
-                            <label for="username">Email</label>
+                            <label htmlFor="username">Email</label>
                             <input
                               type="text"
                               className="form-control"
@@ -138,7 +141,7 @@ const Login = () => {
                           </div>
 
                           <div className="form-group">
-                            <label for="userpassword">Password</label>
+                            <label htmlFor="userpassword">Password</label>
                             <input
                               type="password"
                               className="form-control"
@@ -161,7 +164,7 @@ const Login = () => {
                             />
                             <label
                               className="custom-control-label"
-                              for="customControlInline"
+                              htmlFor="customControlInline"
                             >
                               Remember me
                             </label>
@@ -238,8 +241,8 @@ const Login = () => {
                   <div className="mt-5 text-center">
                     <div>
                       <p>
-                        &copy; Copyright{" "}
-                        <i className="mdi mdi-heart text-danger"></i> RFP System
+                        &copy; <i className="mdi mdi-heart text-danger"></i> RFP
+                        System
                       </p>
                     </div>
                   </div>

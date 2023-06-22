@@ -2,15 +2,21 @@ import React from "react";
 import logo from "../assets/images/velocity_logo.png";
 import { Navigate } from "react-router-dom";
 
+//admin sidebar component
+
 const Navbar = () => {
+  //storing name of user from local storage
   const name = localStorage.getItem("Name");
+
+  //logout function
   const handleLogout = () => {
+    //clearing local storage
     localStorage.removeItem("Name");
     localStorage.removeItem("type");
     localStorage.removeItem("Authorization");
     localStorage.clear();
 
-    window.location.href = "http://localhost:3000";
+    window.location.href = "/";
   };
 
   return (

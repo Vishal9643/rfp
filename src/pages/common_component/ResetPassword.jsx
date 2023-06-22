@@ -5,75 +5,93 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ResetPassword = () => {
+  //state value of input
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [resp, setResp] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [token, setToken] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const location = useLocation();
 
+  //state value for error
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  //state value to store the respone
+  const [resp, setResp] = useState("");
+
+  //state variable to store token
+  const [token, setToken] = useState("");
+
+  //state variable to get the access token from url
+  const location = useLocation();
+  const [getData, setData] = useState("");
+
+  //function to get the access token from url
   useEffect(() => {
-    // alert("vishal");
     const currentPath = location.pathname; // Access the pathname property of location
     const token = currentPath.split("/")[2];
     setToken(token);
-    // console.log(currentPath);
-    console.log(token);
   }, []);
 
-  const [getData, setData] = useState("");
-
+  // Handler for password input change
   const handlePassword = (e) => {
     const input = e.target.value;
-    const regex = /^[a-zA-Z0-9]*$/; // Regex to validate password format (at least 8 characters, one uppercase, one lowercase, and one digit)
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*]).{8,}$/;
     if (regex.test(input)) {
       setPassword(input);
       setPasswordError("");
     } else {
-      setPasswordError("Invalid password");
+      setPasswordError(
+        "Invalid password, Password must be of 8 Characters and must contain one special character, one Uppercase and one Lower case letter and one number"
+      );
     }
   };
 
-  const handleRegister = (e) => {
+  //function to change the password
+  const changePassword = (e) => {
+    //prevent from reloading page
     e.preventDefault();
+
+    //matching password and confirm password
     if (password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
       return;
     }
+
+    //checking if mandatory field is empty
     if (!password) {
-      // Check if any mandatory field is empty
       setPasswordError(!password ? "Password is required" : "");
       toast.error("Please fill in all the mandatory fields.");
-      //   alert("Please fill in all the mandatory fields.");
+
       return;
     }
 
+    //storing all input data in form-data
     const formData = new FormData();
     formData.append("password", password);
 
-    const fetchData = async () => {
+    //sending data to backend
+    const sendData = async () => {
       toast.warn("Changing Password...");
-      const data = await axios.post(
-        "https://rfp-backend.onrender.com/Auth/forget",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(data.data);
+      const data = await axios.post("/Auth/forget", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      //error message
       if (data.data.response === "error") {
         toast.error(data.data.error);
       }
+
+      //success message
       if (data.data.response === "success") {
         toast.success("Password Changed Successfully");
       }
+
+      //storing the response in state variable
       setResp(data.data);
     };
 
-    fetchData();
+    //function calling
+    sendData();
   };
 
   return (
@@ -83,36 +101,34 @@ const ResetPassword = () => {
         <Navigate to="/" />
       ) : (
         <div>
-          <div class="home-btn d-none d-sm-block">
-            <a href="index.html" class="text-dark">
-              <i class="fas fa-home h2"></i>
-            </a>
-          </div>
-          <div class="account-pages my-5 pt-sm-5">
-            <div class="container">
-              <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6 col-xl-8">
-                  <div class="card overflow-hidden">
-                    <div class="bg-soft-primary">
-                      <div class="row">
-                        <div class="col-12">
-                          <div class="text-primary p-4">
-                            <h5 class="text-primary">Welcome to RFP System!</h5>
+          <div className="home-btn d-none d-sm-block"></div>
+          <div className="account-pages my-5 pt-sm-5">
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-md-8 col-lg-6 col-xl-8">
+                  <div className="card overflow-hidden">
+                    <div className="bg-soft-primary">
+                      <div className="row">
+                        <div className="col-12">
+                          <div className="text-primary p-4">
+                            <h5 className="text-primary">
+                              Welcome to RFP System!
+                            </h5>
                             <p>Change Password</p>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="card-body pt-0">
-                      <div class="p-4">
-                        <form class="form-horizontal" action="">
-                          <div class="row">
-                            <div class="col-12">
-                              <div class="form-group">
+                    <div className="card-body pt-0">
+                      <div className="p-4">
+                        <form className="form-horizontal" action="">
+                          <div className="row">
+                            <div className="col-12">
+                              <div className="form-group">
                                 <label for="password">Password*</label>
                                 <input
                                   type="password"
-                                  class="form-control"
+                                  className="form-control"
                                   id="password"
                                   placeholder="Enter Password"
                                   onChange={handlePassword}
@@ -124,12 +140,12 @@ const ResetPassword = () => {
                                 )}
                               </div>
                             </div>
-                            <div class="col-12">
-                              <div class="form-group">
+                            <div className="col-12">
+                              <div className="form-group">
                                 <label for="password">Confirm Password*</label>
                                 <input
                                   type="password"
-                                  class="form-control"
+                                  className="form-control"
                                   id="confirmpassword"
                                   placeholder="Enter Confirm Password"
                                   value={confirmPassword}
@@ -145,11 +161,11 @@ const ResetPassword = () => {
                               </div>
                             </div>
 
-                            <div class="col-12">
+                            <div className="col-12">
                               <button
-                                class="btn btn-primary btn-block waves-effect waves-light"
+                                className="btn btn-primary btn-block waves-effect waves-light"
                                 type="button"
-                                onClick={handleRegister}
+                                onClick={changePassword}
                                 style={{ width: "100%" }}
                               >
                                 Change Password
@@ -160,11 +176,11 @@ const ResetPassword = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="mt-5 text-center">
+                  <div className="mt-5 text-center">
                     <div>
                       <p>
                         &copy; Copyright{" "}
-                        <i class="mdi mdi-heart text-danger"></i> RFP System
+                        <i className="mdi mdi-heart text-danger"></i> RFP System
                       </p>
                     </div>
                   </div>

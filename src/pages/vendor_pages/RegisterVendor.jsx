@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const RegisterVendor = () => {
+  // state variable for input
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -16,15 +17,14 @@ const RegisterVendor = () => {
   const [gst_no, setGst_no] = useState("");
   const [mobile, setMobile] = useState("");
 
+  // error state variable for input
   const [firstnameError, setFirstnameError] = useState("");
   const [lastnameError, setLastnameError] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [pancard_noError, setPancard_noError] = useState("");
   const [gst_noError, setGst_noError] = useState("");
   const [mobileError, setMobileError] = useState("");
-
   const [no_of_employeesError, setNo_of_employeesError] = useState("");
-
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [revenueError, setRevenueError] = useState("");
@@ -34,6 +34,7 @@ const RegisterVendor = () => {
 
   const [getData, setData] = useState("");
 
+  //function to check the firstname input
   const handleFirstName = (e) => {
     const input = e.target.value;
     const regex = /^[A-Za-z]+$/; // Regex to allow only alphabetic characters
@@ -45,6 +46,7 @@ const RegisterVendor = () => {
     }
   };
 
+  //function to check the lastname input
   const handleLastName = (e) => {
     const input = e.target.value;
     const regex = /^[A-Za-z]+$/; // Regex to allow only alphabetic characters
@@ -56,6 +58,7 @@ const RegisterVendor = () => {
     }
   };
 
+  //function to check the email input
   const handleEmail = (e) => {
     const input = e.target.value;
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex to validate email format
@@ -67,17 +70,21 @@ const RegisterVendor = () => {
     }
   };
 
+  //function to check the password input
   const handlePassword = (e) => {
     const input = e.target.value;
-    const regex = /^[a-zA-Z0-9]*$/; // Regex to validate password format (at least 8 characters, one uppercase, one lowercase, and one digit)
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*]).{8,}$/;
     if (regex.test(input)) {
       setPassword(input);
       setPasswordError("");
     } else {
-      setPasswordError("Invalid password");
+      setPasswordError(
+        "Invalid password, Password must be of 8 Characters and must contain one special character, one Uppercase and one Lower case letter and one number"
+      );
     }
   };
 
+  //function to check the revenue input
   const handleRevenue = (e) => {
     const input = e.target.value;
     const regex = /^[\w\s]+(,[\w\s]+)*$/; // Regex to validate password format (at least 8 characters, one uppercase, one lowercase, and one digit)
@@ -89,6 +96,7 @@ const RegisterVendor = () => {
     }
   };
 
+  //function to check employee input
   const handleEmployee = (e) => {
     const input = e.target.value;
     const regex = /^\d+$/; // Regex to allow only numeric input
@@ -100,6 +108,7 @@ const RegisterVendor = () => {
     }
   };
 
+  //function to check the category input
   const handleCategory = (e) => {
     const input = e.target.value;
     const regex = /^[a-zA-Z0-9]*$/; // Regex to validate password format (at least 8 characters, one uppercase, one lowercase, and one digit)
@@ -111,9 +120,10 @@ const RegisterVendor = () => {
     }
   };
 
+  //function to check the pancard input
   const handlePancard = (e) => {
     const input = e.target.value;
-    const regex = /^[a-zA-Z0-9]*$/; // Regex to validate password format (at least 8 characters, one uppercase, one lowercase, and one digit)
+    const regex = /^[A-Z]{5}[0-9]{4}[A-Z]$/; // Regex to validate PAN card number format
     if (regex.test(input)) {
       setPancard_no(input);
       setPancard_noError("");
@@ -122,9 +132,10 @@ const RegisterVendor = () => {
     }
   };
 
+  //function to check the GST input
   const handleGst = (e) => {
     const input = e.target.value;
-    const regex = /^[a-zA-Z0-9]*$/; // Regex to validate password format (at least 8 characters, one uppercase, one lowercase, and one digit)
+    const regex = /^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{3}$/; // Regex to validate GST number format
     if (regex.test(input)) {
       setGst_no(input);
       setGst_noError("");
@@ -133,9 +144,10 @@ const RegisterVendor = () => {
     }
   };
 
+  //function to check the mobile number
   const handleMobile = (e) => {
     const input = e.target.value;
-    const regex = /^[a-zA-Z0-9]*$/; // Regex to validate password format (at least 8 characters, one uppercase, one lowercase, and one digit)
+    const regex = /^(\+?91|0)?[6789]\d{9}$/; // Regex to validate Indian mobile number format
     if (regex.test(input)) {
       setMobile(input);
       setMobileError("");
@@ -144,12 +156,18 @@ const RegisterVendor = () => {
     }
   };
 
+  // function to register the Vendor
   const handleRegister = (e) => {
+    //to prevent reloading of page
     e.preventDefault();
+
+    //to check password and confirm password matched
     if (password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
       return;
     }
+
+    //check the given input field are field correctly
     if (
       !firstname ||
       !email ||
@@ -179,6 +197,7 @@ const RegisterVendor = () => {
       return;
     }
 
+    //combining all the input field data in a form-data
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -192,40 +211,43 @@ const RegisterVendor = () => {
     formData.append("mobile", mobile);
     formData.append("type", "vendor");
 
-    const fetchData = async () => {
+    //function to register the vendor
+    const registerVendor = async () => {
       toast.warn("Registering...");
-      const data = await axios.post(
-        "https://rfp-backend.onrender.com/Auth/register",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(data.data);
+
+      //sending data to backend server
+      const data = await axios.post("/Auth/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      //showing error message
       if (data.data.response === "error") {
-        toast.error(data.data.error);
+        toast.error(data.data.error[0]);
       }
+
+      //showing success message
       if (data.data.response === "success") {
         toast.success("Registration Successful");
       }
+
+      //setting the response in the state variable
       setResp(data.data);
     };
 
-    fetchData();
+    //calling the register vendor function
+    registerVendor();
   };
 
+  //function to fetch the categories on initialization of app
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://rfp-backend.onrender.com/Auth/category`
-        );
+        const response = await axios.get(`/Auth/category`);
         setData(response.data.categories);
-        console.log(response.data.categories);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        toast.error("Error fetching categories");
       }
     };
 
@@ -239,36 +261,34 @@ const RegisterVendor = () => {
         <Navigate to="/" />
       ) : (
         <div>
-          <div class="home-btn d-none d-sm-block">
-            <a href="index.html" class="text-dark">
-              <i class="fas fa-home h2"></i>
-            </a>
-          </div>
-          <div class="account-pages my-5 pt-sm-5">
-            <div class="container">
-              <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6 col-xl-8">
-                  <div class="card overflow-hidden">
-                    <div class="bg-soft-primary">
-                      <div class="row">
-                        <div class="col-12">
-                          <div class="text-primary p-4">
-                            <h5 class="text-primary">Welcome to RFP System!</h5>
+          <div className="home-btn d-none d-sm-block"></div>
+          <div className="account-pages my-5 pt-sm-5">
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-md-8 col-lg-6 col-xl-8">
+                  <div className="card overflow-hidden">
+                    <div className="bg-soft-primary">
+                      <div className="row">
+                        <div className="col-12">
+                          <div className="text-primary p-4">
+                            <h5 className="text-primary">
+                              Welcome to RFP System!
+                            </h5>
                             <p>Regsiter as Vendor</p>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="card-body pt-0">
-                      <div class="p-4">
-                        <form class="form-horizontal" action="">
-                          <div class="row">
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                    <div className="card-body pt-0">
+                      <div className="p-4">
+                        <form className="form-horizontal" action="">
+                          <div className="row">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="firstname">First name*</label>
                                 <input
                                   type="text"
-                                  class="form-control"
+                                  className="form-control"
                                   id="firstname"
                                   placeholder="Enter Firstname"
                                   onChange={handleFirstName}
@@ -280,14 +300,14 @@ const RegisterVendor = () => {
                                 )}
                               </div>
                             </div>
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="lastname">
                                   Last Name<em>*</em>
                                 </label>
                                 <input
                                   type="text"
-                                  class="form-control"
+                                  className="form-control"
                                   id="lastname"
                                   placeholder="Enter Lastname"
                                   onChange={handleLastName}
@@ -299,12 +319,12 @@ const RegisterVendor = () => {
                                 )}
                               </div>
                             </div>
-                            <div class="col-md-12">
-                              <div class="form-group">
+                            <div className="col-md-12">
+                              <div className="form-group">
                                 <label for="email">Email*</label>
                                 <input
                                   type="text"
-                                  class="form-control"
+                                  className="form-control"
                                   id="email"
                                   placeholder="Enter Email"
                                   onChange={handleEmail}
@@ -317,12 +337,12 @@ const RegisterVendor = () => {
                               </div>
                             </div>
 
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="password">Password*</label>
                                 <input
                                   type="password"
-                                  class="form-control"
+                                  className="form-control"
                                   id="password"
                                   placeholder="Enter Password"
                                   onChange={handlePassword}
@@ -334,12 +354,12 @@ const RegisterVendor = () => {
                                 )}
                               </div>
                             </div>
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="password">Confirm Password*</label>
                                 <input
                                   type="password"
-                                  class="form-control"
+                                  className="form-control"
                                   id="confirmpassword"
                                   placeholder="Enter Confirm Password"
                                   value={confirmPassword}
@@ -355,14 +375,14 @@ const RegisterVendor = () => {
                               </div>
                             </div>
 
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="revenue">
                                   Revenue (Last 3 Years in Lacks)*
                                 </label>
                                 <input
                                   type="text"
-                                  class="form-control"
+                                  className="form-control"
                                   id="revenue"
                                   placeholder="Enter Revenue"
                                   onChange={handleRevenue}
@@ -374,14 +394,14 @@ const RegisterVendor = () => {
                                 )}
                               </div>
                             </div>
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="noofemployees">
                                   No of Employees*
                                 </label>
                                 <input
                                   type="text"
-                                  class="form-control"
+                                  className="form-control"
                                   id="noofemployees"
                                   placeholder="No of Employees"
                                   onChange={handleEmployee}
@@ -394,12 +414,12 @@ const RegisterVendor = () => {
                               </div>
                             </div>
 
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="gstno">GST No*</label>
                                 <input
                                   type="text"
-                                  class="form-control"
+                                  className="form-control"
                                   id="gstno"
                                   placeholder="Enter GST No"
                                   onChange={handleGst}
@@ -411,12 +431,12 @@ const RegisterVendor = () => {
                                 )}
                               </div>
                             </div>
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="panno">PAN No*</label>
                                 <input
                                   type="text"
-                                  class="form-control"
+                                  className="form-control"
                                   id="panno"
                                   placeholder="Enter PAN No"
                                   onChange={handlePancard}
@@ -429,14 +449,14 @@ const RegisterVendor = () => {
                               </div>
                             </div>
 
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="revenue">Phone No*</label>
                                 <input
                                   type="text"
-                                  class="form-control"
+                                  className="form-control"
                                   id="revenue"
-                                  placeholder="Enter Phone No"
+                                  placeholder="+919876543210"
                                   onChange={handleMobile}
                                 />
                                 {mobileError && (
@@ -446,11 +466,11 @@ const RegisterVendor = () => {
                                 )}
                               </div>
                             </div>
-                            <div class="col-md-12 col-lg-6 col-xl-6">
-                              <div class="form-group">
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
                                 <label for="Categories">Categories*</label>
                                 <select
-                                  class="form-control"
+                                  className="form-control"
                                   multiple
                                   id="Categories"
                                   name="Categories"
@@ -474,9 +494,9 @@ const RegisterVendor = () => {
                               </div>
                             </div>
 
-                            <div class="p-2 mt-3">
+                            <div className="p-2 mt-3">
                               <button
-                                class="btn btn-primary btn-block waves-effect waves-light"
+                                className="btn btn-primary btn-block waves-effect waves-light"
                                 type="button"
                                 onClick={handleRegister}
                               >
@@ -488,11 +508,11 @@ const RegisterVendor = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="mt-5 text-center">
+                  <div className="mt-5 text-center">
                     <div>
                       <p>
                         &copy; Copyright{" "}
-                        <i class="mdi mdi-heart text-danger"></i> RFP System
+                        <i className="mdi mdi-heart text-danger"></i> RFP System
                       </p>
                     </div>
                   </div>

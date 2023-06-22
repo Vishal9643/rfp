@@ -5,11 +5,19 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ForgetPassword = () => {
+  //state variable for the input
   const [email, setEmail] = useState("");
+
+  //state variable to set response
   const [resp, setResp] = useState("");
+
+  //state variable to set data
   const [getData, setData] = useState("");
+
+  //state variable to set the error for input
   const [emailError, setEmailError] = useState("");
 
+  //function to check the valid format of email
   const handleEmail = (e) => {
     const input = e.target.value;
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex to validate email format
@@ -21,42 +29,47 @@ const ForgetPassword = () => {
     }
   };
 
-  const handleRegister = (e) => {
+  //function for forget password
+  const forgetPassword = (e) => {
+    //preventing for reloading the page
     e.preventDefault();
-    if (!email) {
-      // Check if any mandatory field is empty
 
+    //checking if email is available or not
+    if (!email) {
       setEmailError(!email ? "Email is required" : "");
       toast.error("Please fill in all the mandatory fields.");
-      //   alert("Please fill in all the mandatory fields.");
       return;
     }
 
+    //storing the input email in form-data
     const formData = new FormData();
     formData.append("email", email);
 
-    const fetchData = async () => {
+    //sending email to the backend to forget password
+    const submittingData = async () => {
       toast.warn("Sending Link to registered Mail...");
-      const data = await axios.post(
-        "https://rfp-backend.onrender.com/Auth/reset",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(data.data);
+      const data = await axios.post("/Auth/reset", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      //error message
       if (data.data.response === "error") {
         toast.error(data.data.error);
       }
+
+      //success message
       if (data.data.response === "success") {
         toast.success("Link send on registered mail");
       }
+
+      //storing respons in the state variable
       setResp(data.data);
     };
 
-    fetchData();
+    //calling the submittingData function
+    submittingData();
   };
 
   return (
@@ -66,11 +79,7 @@ const ForgetPassword = () => {
         <Navigate to="/" />
       ) : (
         <div>
-          <div class="home-btn d-none d-sm-block">
-            <a href="index.html" class="text-dark">
-              <i class="fas fa-home h2"></i>
-            </a>
-          </div>
+          <div class="home-btn d-none d-sm-block"></div>
           <div class="account-pages my-5 pt-sm-5">
             <div class="container">
               <div class="row justify-content-center">
@@ -112,7 +121,7 @@ const ForgetPassword = () => {
                               <button
                                 class="btn btn-primary btn-block waves-effect waves-light"
                                 type="button"
-                                onClick={handleRegister}
+                                onClick={forgetPassword}
                                 style={{ width: "100%" }}
                               >
                                 Forget Password
