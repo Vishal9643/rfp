@@ -155,16 +155,20 @@ const VendorRfp = () => {
                                       )}
                                     </td>
                                     <td>
-                                      <Link
-                                        to="/vendor-rfp-apply"
-                                        title="Close RFP"
-                                        className="text-danger"
-                                        onClick={() => {
-                                          applyData(data.id);
-                                        }}
-                                      >
-                                        Apply
-                                      </Link>
+                                      {data.status === "closed" ? (
+                                        ""
+                                      ) : (
+                                        <Link
+                                          to="/vendor-rfp-apply"
+                                          title="Close RFP"
+                                          className="text-danger"
+                                          onClick={() => {
+                                            applyData(data.id);
+                                          }}
+                                        >
+                                          Apply
+                                        </Link>
+                                      )}
                                     </td>
                                   </tr>
                                 ))}
