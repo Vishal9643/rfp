@@ -83,7 +83,7 @@ const CreateRfp = () => {
 
       //error message
       if (response.data.response == "error") {
-        toast.error("There is some problem in creating RFP");
+        toast.error(`${response.data.error[0]}`);
       }
 
       //success message
