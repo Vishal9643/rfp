@@ -233,7 +233,7 @@ const Login = () => {
                             </Link>
                           </div>
                           <div className="mt-4 text-center">
-                            <Link to="/forget-password" className="text-muted">
+                            <Link to="/reset-password" className="text-muted">
                               <i className="mdi mdi-lock mr-1"></i> Forgot your
                               password?
                             </Link>
