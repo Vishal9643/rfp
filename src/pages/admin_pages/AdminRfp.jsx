@@ -55,6 +55,8 @@ const AdminRfp = () => {
     setCurrentPage(pageNumber);
   };
   const type = localStorage.getItem("type");
+  const role = localStorage.getItem("role");
+
   const applyData = (apply) => {
     localStorage.setItem("quote", apply);
   };
@@ -145,16 +147,20 @@ const AdminRfp = () => {
                           <div class="col-lg-3">
                             <h4 class="card-title">RFP</h4>
                           </div>
-                          <div class="col-lg-9 text-right">
-                            <div class="headerButtons">
-                              <Link
-                                to="/admin-view-category"
-                                class="btn btn-sm btn-success "
-                              >
-                                <i class="mdi mdi-plus"></i> Add RFP
-                              </Link>
+                          {role == "manager" ? (
+                           ""
+                          ) : (
+                            <div class="col-lg-9 text-right">
+                              <div class="headerButtons">
+                                <Link
+                                  to="/admin-view-category"
+                                  class="btn btn-sm btn-success "
+                                >
+                                  <i class="mdi mdi-plus"></i> Add RFP
+                                </Link>
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </div>
                       </div>
                       <div class="table-responsive">

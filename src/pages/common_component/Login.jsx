@@ -74,6 +74,7 @@ const Login = () => {
         localStorage.setItem("type", data.data.type);
         localStorage.setItem("Authorization", data.data.token);
         localStorage.setItem("user_id", data.data.user_id);
+        localStorage.setItem("role", data.data.role);
         setResp(data.data);
         console.log(data.data);
         if (data.data.response === "error") {

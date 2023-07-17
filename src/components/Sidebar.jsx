@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 //admin sidebar component
 
 const Sidebar = () => {
+  const role = localStorage.getItem("role");
   return (
     <div>
       <div class="vertical-menu">
@@ -28,19 +29,27 @@ const Sidebar = () => {
                   <span>RFP Lists</span>
                 </Link>
               </li>
-              <li>
-                <Link to="/user-management" class="waves-effect">
-                  <i class="mdi mdi-apps"></i>
-                  <span>User Management</span>
-                </Link>
-              </li>
+              {role == "manager" ? (
+                ""
+              ) : (
+                <li>
+                  <Link to="/user-management" class="waves-effect">
+                    <i class="mdi mdi-apps"></i>
+                    <span>User Management</span>
+                  </Link>
+                </li>
+              )}
 
-              <li>
-                <Link to="/admin-Category" class="waves-effect">
-                  <i class="mdi mdi-weather-night"></i>
-                  <span>Categories</span>
-                </Link>
-              </li>
+              {role == "manager" ? (
+                ""
+              ) : (
+                <li>
+                  <Link to="/admin-Category" class="waves-effect">
+                    <i class="mdi mdi-weather-night"></i>
+                    <span>Categories</span>
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

@@ -428,9 +428,7 @@ const RegisterAdmin = () => {
 
                             <div className="col-md-12 col-lg-6 col-xl-6">
                               <div className="form-group">
-                                <label htmlFor="Org_name">
-                                  Organisation Name*
-                                </label>
+                                <label htmlFor="Org_name">Choose Role*</label>
                                 <select
                                   className="form-control"
                                   multiple
@@ -438,8 +436,8 @@ const RegisterAdmin = () => {
                                   name="role"
                                   onChange={handleRole}
                                 >
-                                  <option value="manager">manager</option>
-                                  <option value="member">member</option>
+                                  <option value="Admin">Admin</option>
+                                  <option value="manager">Manager</option>
                                 </select>
                                 {roleError && (
                                   <span className="text-danger">
