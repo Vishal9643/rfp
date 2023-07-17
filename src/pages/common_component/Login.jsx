@@ -76,7 +76,6 @@ const Login = () => {
         localStorage.setItem("user_id", data.data.user_id);
         localStorage.setItem("role", data.data.role);
         setResp(data.data);
-        console.log(data.data);
         if (data.data.response === "error") {
           toast.error(data.data.error);
         }

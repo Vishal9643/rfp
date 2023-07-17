@@ -34,7 +34,6 @@ const AdminRfp = () => {
           },
         }
       );
-      console.log(data.data);
       setData(data.data);
       setIsLoading(false); // Set isLoading to false after data is fetched
     };

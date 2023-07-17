@@ -35,7 +35,6 @@ const AdminVendorList = () => {
           }
         );
         setData(data.data);
-        console.log(data.data);
         setIsLoading(false); // Set isLoading to false after data is fetched
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,7 +61,6 @@ const AdminVendorList = () => {
           },
         }
       );
-      console.log(data.data);
       if (data.data.response == "error") {
         toast.error("Error in Approving Vendor");
       }

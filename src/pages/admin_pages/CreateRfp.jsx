@@ -141,7 +141,6 @@ const CreateRfp = () => {
           },
         }
       );
-      console.log(response.data.vendors);
       const filteredVendors = response.data.vendors.filter(
         (vendor) => vendor.category === category
       );

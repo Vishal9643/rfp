@@ -71,7 +71,6 @@ const AdminCategory = () => {
     );
 
     //storing status in state variable
-    console.log(data.data);
     setStatus(data.data);
 
     //inactive message
