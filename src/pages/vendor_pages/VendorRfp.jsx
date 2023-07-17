@@ -42,7 +42,6 @@ const VendorRfp = () => {
   };
   const type = localStorage.getItem("type");
 
-  console.log(getData);
   // Logic for pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
