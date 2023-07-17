@@ -6,12 +6,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 //admin dashboard component
 
-const AdminCategory = () => {
+const AdminSetPermission = () => {
   //state variable
   const [getData, setData] = useState("");
 
   //storing token from local storage
   const token = localStorage.getItem("Authorization");
+  const org_name = localStorage.getItem("org_name");
 
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,7 +62,7 @@ const AdminCategory = () => {
 
     //sending data to backend server
     const data = await axios.post(
-      `${process.env.REACT_APP_API}/Auth/changepermission`,
+      `${process.env.REACT_APP_API}/Auth/changecategorystatus`,
       formData,
       {
         headers: {
@@ -345,4 +346,4 @@ const AdminCategory = () => {
   );
 };
 
-export default AdminCategory;
+export default AdminSetPermission;

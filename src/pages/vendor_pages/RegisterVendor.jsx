@@ -16,6 +16,7 @@ const RegisterVendor = () => {
   const [pancard_no, setPancard_no] = useState("");
   const [gst_no, setGst_no] = useState("");
   const [mobile, setMobile] = useState("");
+  const [org, setOrg] = useState("");
 
   // error state variable for input
   const [firstnameError, setFirstnameError] = useState("");
@@ -31,8 +32,18 @@ const RegisterVendor = () => {
   const [resp, setResp] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [orgError, setOrgError] = useState("");
 
   const [getData, setData] = useState("");
+  const [getOrganizationData, setOrganizationData] = useState("");
+
+  // Function to check the category input
+  const handleOrganization = (e) => {
+    e.preventDefault();
+    const input = e.target.value;
+    setOrg(input);
+    setOrgError("");
+  };
 
   //function to check the firstname input
   const handleFirstName = (e) => {
@@ -177,7 +188,8 @@ const RegisterVendor = () => {
       !category ||
       !pancard_no ||
       !gst_no ||
-      !mobile
+      !mobile ||
+      !org
     ) {
       // Check if any mandatory field is empty
       setFirstnameError(!firstname ? "First name is required" : "");
@@ -192,6 +204,8 @@ const RegisterVendor = () => {
       setPancard_noError(!pancard_no ? "PAN card number is required" : "");
       setGst_noError(!gst_no ? "GST number is required" : "");
       setMobileError(!mobile ? "Mobile number is required" : "");
+      setOrgError(!org ? "Organization is required" : "");
+
       toast.error("Please fill in all the mandatory fields.");
       //   alert("Please fill in all the mandatory fields.");
       return;
@@ -209,6 +223,7 @@ const RegisterVendor = () => {
     formData.append("pancard_no", pancard_no);
     formData.append("gst_no", gst_no);
     formData.append("mobile", mobile);
+    formData.append("org_id", org);
     formData.append("type", "vendor");
 
     //function to register the vendor
@@ -246,10 +261,30 @@ const RegisterVendor = () => {
 
   //function to fetch the categories on initialization of app
   useEffect(() => {
+    const fetchOrganizationData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API}/Auth/tenants`
+        );
+        setOrganizationData(response.data.tenant);
+      } catch (error) {
+        toast.error("Error fetching categories");
+      }
+    };
+
+    fetchOrganizationData();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API}/Auth/category`
+          `${process.env.REACT_APP_API}/Auth/category`,
+          {
+            params: {
+              org: org, // Replace org with the actual value of the org parameter
+            },
+          }
         );
         setData(response.data.categories);
       } catch (error) {
@@ -258,7 +293,7 @@ const RegisterVendor = () => {
     };
 
     fetchData();
-  }, []);
+  }, [org]);
 
   return (
     <>
@@ -455,7 +490,7 @@ const RegisterVendor = () => {
                               </div>
                             </div>
 
-                            <div className="col-md-12 col-lg-6 col-xl-6">
+                            <div className="col-md-12 ">
                               <div className="form-group">
                                 <label for="revenue">Phone No*</label>
                                 <input
@@ -472,6 +507,43 @@ const RegisterVendor = () => {
                                 )}
                               </div>
                             </div>
+
+                            <div className="col-md-12 col-lg-6 col-xl-6">
+                              <div className="form-group">
+                                <label htmlFor="Org_name">
+                                  Organisation Name*
+                                </label>
+                                <select
+                                  className="form-control"
+                                  multiple
+                                  id="Organisation"
+                                  name="Organisation"
+                                  onChange={handleOrganization}
+                                >
+                                  <option value="">All Organisation</option>
+                                  {/* Mapping through the organizations */}
+                                  {Object.entries(getOrganizationData).map(
+                                    ([id, organisation]) =>
+                                      organisation.status === "active" && (
+                                        <option
+                                          key={id}
+                                          value={organisation.id}
+                                        >
+                                          {organisation.org_name}
+                                        </option>
+                                      )
+                                  )}
+                                  {/* Adding "Other" option to create a new organization */}
+                                  <option value="other">Other</option>
+                                </select>
+                                {orgError && (
+                                  <span className="text-danger">
+                                    {orgError}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
                             <div className="col-md-12 col-lg-6 col-xl-6">
                               <div className="form-group">
                                 <label for="Categories">Categories*</label>

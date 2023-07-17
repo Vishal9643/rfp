@@ -53,7 +53,7 @@ const CreateCategory = () => {
 
       //error messsage
       if (data.data.response == "error") {
-        toast.error("error in adding category");
+        toast.error(data.data.error);
       }
 
       //success message
